@@ -1,0 +1,81 @@
+﻿@model Student.Models.Employee_Info
+
+@{
+    ViewBag.Title = "GetRecordsDetail";
+}
+
+<h2>GetRecordsDetail</h2>
+
+<div>
+    <h4>Employee_Info</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayName("Name")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Emp_Name)
+            <hr />
+        </dd>
+        
+        <dt>
+            @Html.DisplayName("Address")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Emp_Address)
+            <hr />
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Country")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CountryMd.Country_name)
+            <hr />
+        </dd>
+
+        <dt>
+            @Html.DisplayName("State")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StateMd.State_Name)
+           <hr />
+        </dd>
+
+        <dt>
+            @Html.DisplayName("City")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CityMd.City_Name)
+            <hr />
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Date of Birth")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Date_of_Birth)
+            <hr />
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Phone")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Phone)
+            <hr />
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "GetRecord")
+</p>

@@ -1,0 +1,121 @@
+﻿@model Student.Models.Employee_Info
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+<div class="form-horizontal">
+    <h4>Employee_Info</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Id)
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Emp_Name, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Emp_Name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Emp_Name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Emp_Address, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Emp_Address, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Emp_Address, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.Label("Country", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.CountryMd.Country_Id, ViewBag.CountryInfo as SelectList, "---Select Country List---",
+           htmlAttributes: new { @class = "form-control", @id = "Country", @onchange = "countryonchange()" })
+            @Html.ValidationMessageFor(model => model.Countrydb.Country_Id, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.Label("State", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.StateMd.State_Id, new SelectList(" "), "---Select State List---",
+           htmlAttributes: new { @class = "form-control", @id = "State", @onchange = "stateonchange()" })
+            @Html.ValidationMessageFor(model => model.Statedb.State_Id, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.Label("City", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.CityMd.City_Id, new SelectList(" "), "---Select City List---",
+           htmlAttributes: new { @class = "form-control", @id = "City" })
+            @Html.ValidationMessageFor(model => model.Citydb.City_Id, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <script>
+        function countryonchange() {
+            var country = $('#Country').val();
+            $.ajax({
+                type: "POST",
+                url: "https://localhost:44389/Default/GetCountry?cid=" + country,
+                contentType: "html",
+                success: function (response) {
+                    $('#State').empty();
+                    $('#State').append(response);
+                }
+            });
+        }
+
+
+        function stateonchange() {
+            var state = $('#State').val();
+            $.ajax({
+                type: "POST",
+                url: "https://localhost:44389/Default/GetState?sid=" + state,
+                contentType: "html",
+                success: function (response) {
+                    $('#City').empty();
+                    $('#City').append(response);
+                }
+            });
+        }
+    </script>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Date_of_Birth, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Date_of_Birth, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Date_of_Birth, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Phone, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Get Record", "GetRecord")
+</div>
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>

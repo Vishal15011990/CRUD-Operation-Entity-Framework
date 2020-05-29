@@ -1,0 +1,335 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="EmployeeModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="City_Info">
+          <Key>
+            <PropertyRef Name="City_Id" />
+          </Key>
+          <Property Name="City_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="State_RefId" Type="int" />
+          <Property Name="City_Name" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Country_Info">
+          <Key>
+            <PropertyRef Name="Country_Id" />
+          </Key>
+          <Property Name="Country_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Country_name" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Emp_Info">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Emp_Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Emp_Address" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Country" Type="int" />
+          <Property Name="State" Type="int" />
+          <Property Name="City" Type="int" />
+          <Property Name="Date_of_Birth" Type="datetime" Nullable="false" />
+          <Property Name="Phone" Type="char" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="State_info">
+          <Key>
+            <PropertyRef Name="State_Id" />
+          </Key>
+          <Property Name="State_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="State_Name" Type="nvarchar(max)" />
+          <Property Name="Country_RefId" Type="int" />
+        </EntityType>
+        <Association Name="FK_City_Info_State_Info">
+          <End Role="State_info" Type="Self.State_info" Multiplicity="0..1" />
+          <End Role="City_Info" Type="Self.City_Info" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="State_info">
+              <PropertyRef Name="State_Id" />
+            </Principal>
+            <Dependent Role="City_Info">
+              <PropertyRef Name="State_RefId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Emp_City_City_Info">
+          <End Role="City_Info" Type="Self.City_Info" Multiplicity="0..1" />
+          <End Role="Emp_Info" Type="Self.Emp_Info" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="City_Info">
+              <PropertyRef Name="City_Id" />
+            </Principal>
+            <Dependent Role="Emp_Info">
+              <PropertyRef Name="City" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Emp_Country_Country_Info">
+          <End Role="Country_Info" Type="Self.Country_Info" Multiplicity="0..1" />
+          <End Role="Emp_Info" Type="Self.Emp_Info" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Country_Info">
+              <PropertyRef Name="Country_Id" />
+            </Principal>
+            <Dependent Role="Emp_Info">
+              <PropertyRef Name="Country" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Emp_State_State_Info">
+          <End Role="State_info" Type="Self.State_info" Multiplicity="0..1" />
+          <End Role="Emp_Info" Type="Self.Emp_Info" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="State_info">
+              <PropertyRef Name="State_Id" />
+            </Principal>
+            <Dependent Role="Emp_Info">
+              <PropertyRef Name="State" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_State_info_Country_Info">
+          <End Role="Country_Info" Type="Self.Country_Info" Multiplicity="0..1" />
+          <End Role="State_info" Type="Self.State_info" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Country_Info">
+              <PropertyRef Name="Country_Id" />
+            </Principal>
+            <Dependent Role="State_info">
+              <PropertyRef Name="Country_RefId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EmployeeModelStoreContainer">
+          <EntitySet Name="City_Info" EntityType="Self.City_Info" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Country_Info" EntityType="Self.Country_Info" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Emp_Info" EntityType="Self.Emp_Info" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="State_info" EntityType="Self.State_info" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_City_Info_State_Info" Association="Self.FK_City_Info_State_Info">
+            <End Role="State_info" EntitySet="State_info" />
+            <End Role="City_Info" EntitySet="City_Info" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Emp_City_City_Info" Association="Self.FK_Emp_City_City_Info">
+            <End Role="City_Info" EntitySet="City_Info" />
+            <End Role="Emp_Info" EntitySet="Emp_Info" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Emp_Country_Country_Info" Association="Self.FK_Emp_Country_Country_Info">
+            <End Role="Country_Info" EntitySet="Country_Info" />
+            <End Role="Emp_Info" EntitySet="Emp_Info" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Emp_State_State_Info" Association="Self.FK_Emp_State_State_Info">
+            <End Role="State_info" EntitySet="State_info" />
+            <End Role="Emp_Info" EntitySet="Emp_Info" />
+          </AssociationSet>
+          <AssociationSet Name="FK_State_info_Country_Info" Association="Self.FK_State_info_Country_Info">
+            <End Role="Country_Info" EntitySet="Country_Info" />
+            <End Role="State_info" EntitySet="State_info" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="EmployeeModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="City_Info">
+          <Key>
+            <PropertyRef Name="City_Id" />
+          </Key>
+          <Property Name="City_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="State_RefId" Type="Int32" />
+          <Property Name="City_Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="State_info" Relationship="Self.FK_City_Info_State_Info" FromRole="City_Info" ToRole="State_info" />
+          <NavigationProperty Name="Emp_Info" Relationship="Self.FK_Emp_City_City_Info" FromRole="City_Info" ToRole="Emp_Info" />
+        </EntityType>
+        <EntityType Name="Country_Info">
+          <Key>
+            <PropertyRef Name="Country_Id" />
+          </Key>
+          <Property Name="Country_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Country_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Emp_Info" Relationship="Self.FK_Emp_Country_Country_Info" FromRole="Country_Info" ToRole="Emp_Info" />
+          <NavigationProperty Name="State_info" Relationship="Self.FK_State_info_Country_Info" FromRole="Country_Info" ToRole="State_info" />
+        </EntityType>
+        <EntityType Name="Emp_Info">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Emp_Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Emp_Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Country" Type="Int32" />
+          <Property Name="State" Type="Int32" />
+          <Property Name="City" Type="Int32" />
+          <Property Name="Date_of_Birth" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="City_Info" Relationship="Self.FK_Emp_City_City_Info" FromRole="Emp_Info" ToRole="City_Info" />
+          <NavigationProperty Name="Country_Info" Relationship="Self.FK_Emp_Country_Country_Info" FromRole="Emp_Info" ToRole="Country_Info" />
+          <NavigationProperty Name="State_info" Relationship="Self.FK_Emp_State_State_Info" FromRole="Emp_Info" ToRole="State_info" />
+          <Property Name="Phone" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <EntityType Name="State_info">
+          <Key>
+            <PropertyRef Name="State_Id" />
+          </Key>
+          <Property Name="State_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="State_Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Country_RefId" Type="Int32" />
+          <NavigationProperty Name="City_Info" Relationship="Self.FK_City_Info_State_Info" FromRole="State_info" ToRole="City_Info" />
+          <NavigationProperty Name="Country_Info" Relationship="Self.FK_State_info_Country_Info" FromRole="State_info" ToRole="Country_Info" />
+          <NavigationProperty Name="Emp_Info" Relationship="Self.FK_Emp_State_State_Info" FromRole="State_info" ToRole="Emp_Info" />
+        </EntityType>
+        <Association Name="FK_City_Info_State_Info">
+          <End Role="State_info" Type="Self.State_info" Multiplicity="0..1" />
+          <End Role="City_Info" Type="Self.City_Info" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="State_info">
+              <PropertyRef Name="State_Id" />
+            </Principal>
+            <Dependent Role="City_Info">
+              <PropertyRef Name="State_RefId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Emp_City_City_Info">
+          <End Role="City_Info" Type="Self.City_Info" Multiplicity="0..1" />
+          <End Role="Emp_Info" Type="Self.Emp_Info" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="City_Info">
+              <PropertyRef Name="City_Id" />
+            </Principal>
+            <Dependent Role="Emp_Info">
+              <PropertyRef Name="City" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Emp_Country_Country_Info">
+          <End Role="Country_Info" Type="Self.Country_Info" Multiplicity="0..1" />
+          <End Role="Emp_Info" Type="Self.Emp_Info" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Country_Info">
+              <PropertyRef Name="Country_Id" />
+            </Principal>
+            <Dependent Role="Emp_Info">
+              <PropertyRef Name="Country" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_State_info_Country_Info">
+          <End Role="Country_Info" Type="Self.Country_Info" Multiplicity="0..1" />
+          <End Role="State_info" Type="Self.State_info" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Country_Info">
+              <PropertyRef Name="Country_Id" />
+            </Principal>
+            <Dependent Role="State_info">
+              <PropertyRef Name="Country_RefId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Emp_State_State_Info">
+          <End Role="State_info" Type="Self.State_info" Multiplicity="0..1" />
+          <End Role="Emp_Info" Type="Self.Emp_Info" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="State_info">
+              <PropertyRef Name="State_Id" />
+            </Principal>
+            <Dependent Role="Emp_Info">
+              <PropertyRef Name="State" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EmployeeEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="City_Info" EntityType="Self.City_Info" />
+          <EntitySet Name="Country_Info" EntityType="Self.Country_Info" />
+          <EntitySet Name="Emp_Info" EntityType="Self.Emp_Info" />
+          <EntitySet Name="State_info" EntityType="Self.State_info" />
+          <AssociationSet Name="FK_City_Info_State_Info" Association="Self.FK_City_Info_State_Info">
+            <End Role="State_info" EntitySet="State_info" />
+            <End Role="City_Info" EntitySet="City_Info" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Emp_City_City_Info" Association="Self.FK_Emp_City_City_Info">
+            <End Role="City_Info" EntitySet="City_Info" />
+            <End Role="Emp_Info" EntitySet="Emp_Info" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Emp_Country_Country_Info" Association="Self.FK_Emp_Country_Country_Info">
+            <End Role="Country_Info" EntitySet="Country_Info" />
+            <End Role="Emp_Info" EntitySet="Emp_Info" />
+          </AssociationSet>
+          <AssociationSet Name="FK_State_info_Country_Info" Association="Self.FK_State_info_Country_Info">
+            <End Role="Country_Info" EntitySet="Country_Info" />
+            <End Role="State_info" EntitySet="State_info" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Emp_State_State_Info" Association="Self.FK_Emp_State_State_Info">
+            <End Role="State_info" EntitySet="State_info" />
+            <End Role="Emp_Info" EntitySet="Emp_Info" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="EmployeeModelStoreContainer" CdmEntityContainer="EmployeeEntities">
+          <EntitySetMapping Name="City_Info">
+            <EntityTypeMapping TypeName="EmployeeModel.City_Info">
+              <MappingFragment StoreEntitySet="City_Info">
+                <ScalarProperty Name="City_Id" ColumnName="City_Id" />
+                <ScalarProperty Name="State_RefId" ColumnName="State_RefId" />
+                <ScalarProperty Name="City_Name" ColumnName="City_Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Country_Info">
+            <EntityTypeMapping TypeName="EmployeeModel.Country_Info">
+              <MappingFragment StoreEntitySet="Country_Info">
+                <ScalarProperty Name="Country_Id" ColumnName="Country_Id" />
+                <ScalarProperty Name="Country_name" ColumnName="Country_name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Emp_Info">
+            <EntityTypeMapping TypeName="EmployeeModel.Emp_Info">
+              <MappingFragment StoreEntitySet="Emp_Info">
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Emp_Name" ColumnName="Emp_Name" />
+                <ScalarProperty Name="Emp_Address" ColumnName="Emp_Address" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Date_of_Birth" ColumnName="Date_of_Birth" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="State_info">
+            <EntityTypeMapping TypeName="EmployeeModel.State_info">
+              <MappingFragment StoreEntitySet="State_info">
+                <ScalarProperty Name="State_Id" ColumnName="State_Id" />
+                <ScalarProperty Name="State_Name" ColumnName="State_Name" />
+                <ScalarProperty Name="Country_RefId" ColumnName="Country_RefId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
